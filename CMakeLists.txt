@@ -11,14 +11,15 @@ find_package(glfw3 REQUIRED)
 
 
 # ----- Executables ------ 
-add_executable(PROJECT_NAME
+add_executable(opengl_snake
     src/main.cpp
+    src/external/glad.c
 )
 
-target_include_directories(PROJECT_NAME PRIVATE
+target_include_directories(opengl_snake PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include         # for header files
     ${CMAKE_CURRENT_SOURCE_DIR}/libs            # for external header files
     ${CMAKE_BINARY_DIR}
 )
 
-target_link_libraries(PROJECT_NAME PRIVATE OpenGL::GL glfw)
+target_link_libraries(opengl_snake PRIVATE OpenGL::GL glfw)
