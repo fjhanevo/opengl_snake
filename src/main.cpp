@@ -19,6 +19,8 @@ int main()
         "Snake", nullptr, nullptr
     );
 
+    glfwMakeContextCurrent(window);
+
     // ----- Load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -44,9 +46,20 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     glfwTerminate();
     return 0;
 }
 
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS ||
+        key == GLFW_KEY_Q && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0,0 , width, height);
+}
