@@ -13,7 +13,9 @@ find_package(glfw3 REQUIRED)
 # ----- Executables ------ 
 add_executable(opengl_snake
     src/main.cpp
+    src/game.cpp
     src/external/glad.c
+    src/external/shader.cpp
 )
 
 target_include_directories(opengl_snake PRIVATE
