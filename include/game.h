@@ -20,14 +20,23 @@ public:
     Game(GLuint width, GLuint height);
     ~Game();
 
-    void run();
-private:
-    // ----- Member variables -----
-    GLuint m_width{}, m_height{};
-    GLuint m_score{};
+    // ---- Game functions -----
+    void init();
+    void update(float dt);
+    void render();
+    void processInput();
+    void playAgain();
 
-    bool keys[1024];
-    bool keysProcessed[1024];
+    // ----- Public member variables -----
+    bool m_keys[1024];
+    bool m_keysProcessed[1024];
+
+private:
+    // ----- Private member variables -----
+    GLuint m_width{};
+    GLuint m_height{};
+    GLuint m_score{};
+    GLfloat m_moveTimer {};
 
     GLFWwindow *m_window;
     GameState m_state;
@@ -35,16 +44,7 @@ private:
     Food *m_food;
     Border *m_border;
     
-    // ---- Game setup functions -----
-    void init();
-    void update(float dt);
-    void render();
-    void processInput();
-    void cleanup();
-    void playAgain();
-
-    // ----- Game specific function
+    // ----- Private Game functions -----
     void addFood();
     void checkCollision();
-    float moveTimer {0.0f};
 };
