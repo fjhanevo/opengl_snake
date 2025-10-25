@@ -11,12 +11,12 @@ Shader &Shader::use()
 
 void Shader::compile(std::string_view vertexSource, std::string_view fragmentSource)
 {
-    unsigned int sVertex, sFragment;
+    GLuint sVertex, sFragment;
 
     // ------ Vertex shader ------ 
     // get pointer and length from string_view
     const char *vertexSourcePtr {vertexSource.data()};   // get pointer and length from string_view
-    const int vertexSourceLen {(int)vertexSource.length()};
+    const GLint vertexSourceLen {static_cast<GLint>(vertexSource.length())};
     sVertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(sVertex, 1, &vertexSourcePtr, &vertexSourceLen);
     glCompileShader(sVertex);
@@ -25,8 +25,8 @@ void Shader::compile(std::string_view vertexSource, std::string_view fragmentSou
     // ------ Fragment shader ------ 
     // get pointer and length from string_view
     const char *fragmentSourcePtr {fragmentSource.data()};
-    const int fragmentSourceLen {(int)fragmentSource.length()};
-    sFragment = glCreateShader(GL_VERTEX_SHADER);
+    const GLint fragmentSourceLen {static_cast<GLint>(fragmentSource.length())};
+    sFragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(sFragment, 1, &fragmentSourcePtr, &fragmentSourceLen);
     glCompileShader(sFragment);
     checkCompileErrors(sFragment, "FRAGMENT");
@@ -42,21 +42,21 @@ void Shader::compile(std::string_view vertexSource, std::string_view fragmentSou
     glDeleteShader(sFragment);
 }
 
-void Shader::setInt(const std::string &name, int value, bool useShader)
+void Shader::setInt(const std::string &name, GLint value, bool useShader)
 {
     if (useShader)
         use();
     glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value);
 }
 
-void Shader::setFloat(const std::string &name, float value, bool useShader)
+void Shader::setFloat(const std::string &name, GLfloat value, bool useShader)
 {
     if (useShader)
         use();
 
 }
 
-void Shader::setVec2(const std::string &name, glm::vec2 &vec ,bool useShader)
+void Shader::setVec2(const std::string &name, glm::vec2 &vec, bool useShader)
 {
     if (useShader)
         use();
@@ -64,7 +64,7 @@ void Shader::setVec2(const std::string &name, glm::vec2 &vec ,bool useShader)
 }
 
 
-void Shader::setVec3(const std::string &name, glm::vec3 &vec ,bool useShader)
+void Shader::setVec3(const std::string &name, glm::vec3 &vec, bool useShader)
 {
     if (useShader)
         use();
@@ -101,9 +101,9 @@ void Shader::setMat4(const std::string &name, glm::mat4 &mat, bool useShader)
     glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::checkCompileErrors(unsigned int shader, std::string type)
+void Shader::checkCompileErrors(GLuint shader, const std::string &type)
 {
-    int success;
+    GLint success;
     char infoLog[1024];
     if (type != "PROGRAM")
     {
