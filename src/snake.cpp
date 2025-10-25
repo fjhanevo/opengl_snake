@@ -14,10 +14,10 @@ void Snake::init()
     // clear snake body 
     m_segments.clear();
 
-    glm::vec2 headPos = glm::vec2(
+    glm::vec2 headPos{ glm::vec2(
         floor(m_width / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
         floor(m_height / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE
-    );
+    )};
     m_segments.push_back(headPos);
 
     // Add two more body parts
@@ -35,7 +35,7 @@ void Snake::draw(SpriteRenderer &renderer)
         );
 
     // Draw the body
-    for (size_t i = 1; i < m_segments.size() - 1; i++)
+    for (size_t i{ 1 }; i < m_segments.size() - 1; i++)
     {
         renderer.drawSprite(
             ResourceManager::getTexture("snakeBody"),   //TODO: Change body texture based on corners
@@ -57,7 +57,7 @@ void Snake::draw(SpriteRenderer &renderer)
 void Snake::move()
 {
     // shift body backwards
-    for (size_t i = m_segments.size() - 1; i > 0; i--)
+    for (size_t i{ m_segments.size() - 1 }; i > 0; i--)
     {
         m_segments[i] = m_segments[i-1];
     }
