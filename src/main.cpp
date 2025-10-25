@@ -27,7 +27,6 @@ int main()
 
     glfwMakeContextCurrent(window);
 
-    // Create Game instance
     // tell GLFW to associate the game instance with the window
     glfwSetWindowUserPointer(window, &Snake);
 
@@ -48,17 +47,31 @@ int main()
 
     // ----- Initialize the game -----
     Snake.init();
+    float deltaTime{ 0.0f };
+    float lastFrame{ 0.0f };
 
     // main loop 
     while (!glfwWindowShouldClose(window))
     {
+        // Calculate deltaTime
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        glfwPollEvents();
+
+        // User input
+        Snake.processInput();
+
+        // update Game state
+        Snake.update(deltaTime);
         // Render a background
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.4f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+
+        // render
         Snake.render();
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     glfwTerminate();
@@ -81,8 +94,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
             Snake.m_keysProcessed[key] = false;
         }
     }
-    
 }
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
    glViewport(0,0 , width, height);
