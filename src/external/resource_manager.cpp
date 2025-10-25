@@ -54,7 +54,7 @@ Shader ResourceManager::loadShaderFromFile(
     try 
     {
         std::ifstream vertexShaderFile(vShaderFile);
-        std::ifstream fragmentShaderFile(vShaderFile);
+        std::ifstream fragmentShaderFile(fShaderFile);
         std::stringstream vShaderStream{}, fShaderStream{};
 
         // read file buffer into streams
