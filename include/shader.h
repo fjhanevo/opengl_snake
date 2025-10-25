@@ -9,7 +9,7 @@ class Shader
 {
 public:
     // program ID
-    unsigned int m_ID;
+    GLuint m_ID;
 
     // constructor
     Shader() { }
