@@ -53,3 +53,61 @@ void Snake::draw(SpriteRenderer &renderer)
         );
     }
 }
+
+void Snake::move()
+{
+    // shift body backwards
+    for (size_t i = m_segments.size() - 1; i > 0; i--)
+    {
+        m_segments[i] = m_segments[i-1];
+    }
+
+    // update head position
+    switch(m_currentDirection)
+    {
+        case Direction::UP:     m_segments[0].y -= Constants::GRID_SIZE; break;
+        case Direction::DOWN:   m_segments[0].y += Constants::GRID_SIZE; break;
+        case Direction::LEFT:   m_segments[0].x -= Constants::GRID_SIZE; break;
+        case Direction::RIGHT:  m_segments[0].x += Constants::GRID_SIZE; break;
+    }
+}
+
+void Snake::grow()
+{
+    m_segments.push_back(m_segments.back());
+}
+
+void Snake::setDirection(Direction dir)
+{
+    m_currentDirection = dir;
+}
+
+void Snake::queueDirection(Direction dir)
+{
+    m_nextDirection = dir;
+}
+
+Direction Snake::getCurrentDirection() const
+{
+    return m_currentDirection;
+}
+
+Direction Snake::getNextDirection() const
+{
+    return m_nextDirection;
+}
+
+glm::vec2 Snake::getHeadPosition() const
+{
+    return m_segments[0];
+}
+
+int Snake::getLength() const
+{
+    return m_segments.size();
+}
+
+const std::vector<glm::vec2> &Snake::getSegments() const
+{
+    return m_segments;
+}
