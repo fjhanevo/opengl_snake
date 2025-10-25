@@ -11,10 +11,10 @@ class Snake
 public:
     Snake (GLuint width, GLuint height);
 
+    void init();
     void draw(SpriteRenderer &renderer);
     void move();
     void grow();
-    void resetSnake(GLuint width, GLuint height);
 
     void setDirection(Direction dir);
     void queueDirection(Direction dir);
@@ -28,6 +28,7 @@ public:
 
 private:
     std::vector<glm::vec2> m_segments{};
+    GLuint m_width, m_height;
     Direction m_currentDirection {};
     Direction m_nextDirection {};
 };
