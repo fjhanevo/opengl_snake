@@ -15,8 +15,8 @@ SpriteRenderer::~SpriteRenderer()
 void SpriteRenderer::drawSprite(
     Texture2D &texture,
     glm::vec2 position,
+    GLfloat rotation,
     glm::vec2 size,
-    float rotation,
     glm::vec3 color)
 {
     m_shader.use();
@@ -51,7 +51,7 @@ void SpriteRenderer::drawSprite(
 void SpriteRenderer::initRenderData()
 {
     GLuint VBO{};
-    float vertices[] = {
+    GLfloat vertices[] = {
         // position     // texture
         0.0f, 1.0f,     0.0f, 1.0f,
         1.0f, 0.0f,     1.0f, 0.0f,
@@ -70,7 +70,7 @@ void SpriteRenderer::initRenderData()
 
     glBindVertexArray(m_quadVAO);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

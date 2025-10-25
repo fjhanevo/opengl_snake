@@ -15,8 +15,8 @@ public:
     void drawSprite(
         Texture2D &texture,
         glm::vec2 position,
-        glm::vec2 size = glm::vec2(Constants::GRID_SIZE, Constants::GRID_SIZE),
         GLfloat rotation = 0.0f,
+        glm::vec2 size = glm::vec2(Constants::GRID_SIZE, Constants::GRID_SIZE),
         glm::vec3 color = glm::vec3(1.0f)
     );
 
