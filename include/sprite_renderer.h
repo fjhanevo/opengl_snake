@@ -20,8 +20,8 @@ public:
     );
 
 private:
-    Shader m_shader;
-    GLuint m_quadVAO;
+    Shader m_shader {};
+    GLuint m_quadVAO {};
 
     void initRenderData();
 };
