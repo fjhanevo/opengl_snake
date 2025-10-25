@@ -2,10 +2,16 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "constants.h"
+#include "game.h"
 
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+
+
+// Create the Game instance here
+Game Snake(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT);
+
 int main()
 {
     glfwInit();
@@ -20,6 +26,10 @@ int main()
     );
 
     glfwMakeContextCurrent(window);
+
+    // Create Game instance
+    // tell GLFW to associate the game instance with the window
+    glfwSetWindowUserPointer(window, &Snake);
 
     // ----- Load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -37,6 +47,7 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // ----- Initialize the game -----
+    Snake.init();
 
     // main loop 
     while (!glfwWindowShouldClose(window))
@@ -45,6 +56,7 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        Snake.render();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -56,10 +68,22 @@ int main()
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS ||
-        key == GLFW_KEY_Q && action == GLFW_PRESS)
+    key == GLFW_KEY_Q && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (key >= 0 && key <= 1024)
+        {
+        if (action == GLFW_PRESS)
+            Snake.m_keys[key] = true;
+        else if (action == GLFW_RELEASE)
+        {
+            Snake.m_keys[key] = false;
+            Snake.m_keysProcessed[key] = false;
+        }
+    }
+    
 }
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-    glViewport(0,0 , width, height);
+   glViewport(0,0 , width, height);
 }
