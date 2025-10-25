@@ -7,9 +7,10 @@ public:
     Food();
     void draw(SpriteRenderer &renderer);
     void update(float dt);
-    void spawn(const glm::vec2 &position);
+    void addFood(const glm::vec2 &position);
 
 private:
-    float foodTimer {};
-    bool isActive {};
+    glm::vec2 m_position {};
+    float m_foodTimer {};
+    bool m_isActive {};
 };
