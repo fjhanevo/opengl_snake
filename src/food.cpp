@@ -8,14 +8,10 @@ Food::Food()
 
 void Food::draw(SpriteRenderer &renderer)
 {
-    // only draw if there is a food object
-    if (m_isActive)
-    {
-        renderer.drawSprite(
-            ResourceManager::getTexture("apple"),
-            m_position
-            );
-    }
+    renderer.drawSprite(
+        ResourceManager::getTexture("apple"),
+        m_position
+        );
 }
 
 void Food::update(float dt)
@@ -32,9 +28,14 @@ void Food::update(float dt)
     }
 }
 
-void Food::addFood(const glm::vec2& position)
+void Food::init(const glm::vec2& position)
 {
     m_isActive = true; 
     m_foodTimer = FOOD_TIME;
     m_position = position;
+}
+
+bool Food::getState() const
+{
+    return m_isActive;
 }
