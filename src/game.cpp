@@ -24,7 +24,7 @@ std::mt19937 dev;
 std::random_device r;
 std::uniform_int_distribution<> distX(1, Constants::SCREEN_WIDTH  / Constants::GRID_SIZE - 2);
 std::uniform_int_distribution<> distY(1, Constants::SCREEN_HEIGHT / Constants::GRID_SIZE - 2);
-std::uniform_int_distribution<> distBackground(0,5);    // For randomly generating background
+std::uniform_int_distribution<> distBackground(0,12);    // For randomly generating background
 
 // ----- Global variables ------
 SpriteRenderer *Renderer{};
@@ -76,6 +76,13 @@ void Game::init()
     ResourceManager::loadTexture(getPath("textures/background3.png"), true, "background3");
     ResourceManager::loadTexture(getPath("textures/background4.png"), true, "background4");
     ResourceManager::loadTexture(getPath("textures/background5.png"), true, "background5");
+    ResourceManager::loadTexture(getPath("textures/background6.png"), true, "background6");
+    ResourceManager::loadTexture(getPath("textures/background7.png"), true, "background7");
+    ResourceManager::loadTexture(getPath("textures/background8.png"), true, "background8");
+    ResourceManager::loadTexture(getPath("textures/background9.png"), true, "background9");
+    ResourceManager::loadTexture(getPath("textures/background10.png"), true, "background10");
+    ResourceManager::loadTexture(getPath("textures/background11.png"), true, "background11");
+    ResourceManager::loadTexture(getPath("textures/background12.png"), true, "background12");
 
     Renderer = new SpriteRenderer(ResourceManager::getShader("sprite"));
     Text = new TextRenderer(m_width, m_height);
@@ -113,7 +120,6 @@ void Game::update(float dt)
 
 }
 
-
 static std::vector<std::vector<int>> backgroundGrid{};
 
 static void generateBackgroundGrid()
@@ -131,7 +137,6 @@ static void generateBackgroundGrid()
         }
     }
 }
-
 
 // Temporary function to draw background
 static void fillBackground(SpriteRenderer &renderer)
@@ -290,6 +295,7 @@ void Game::playAgain()
     m_score = 0;
     m_snake->init();
     m_food->setState(false);
+    backgroundGrid.clear();
     m_state = GAME_ACTIVE;
 
 }
