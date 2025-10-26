@@ -53,7 +53,8 @@ void Snake::draw(SpriteRenderer &renderer)
     {
         renderer.drawSprite(
             ResourceManager::getTexture("snakeTail"),
-            m_segments[m_segments.size()-1]
+            m_segments.back(),
+            applyBodyRotation(m_segments.size()-1) + 180.0f
         );
     }
 }
@@ -81,6 +82,27 @@ void Snake::grow()
     m_segments.push_back(m_segments.back());
 }
 
+// Helper function to get rotation
+static GLfloat getRotation(const glm::vec2 &prevSegment, const glm::vec2 &currSegment)
+{
+    // check if they're on the same horizontal line
+    if (prevSegment.y == currSegment.y)
+    {
+        if (prevSegment.x < currSegment.x) return 270.f;    // moves to the RIGHT
+        else return 90.0f;                                  // moves to the LEFT
+    }
+
+    // check if the're on the same vertical line
+    else if (prevSegment.x == currSegment.x)
+    {
+        if (prevSegment.y < currSegment.y) return 0.0f;     // moves DOWN
+        else return 180.0f;                                 // moves UP
+    }
+
+    // default return value
+    return 0.0f;
+}
+
 GLfloat Snake::applyHeadRotation()
 {
     switch (getCurrentDirection())
@@ -88,28 +110,51 @@ GLfloat Snake::applyHeadRotation()
         case Direction::UP:     return 180.0f; break;
         case Direction::DOWN:   return 0.0f; break;
         case Direction::LEFT:   return 90.0f; break;
-        case Direction::RIGHT:  return -90.0f; break;
+        case Direction::RIGHT:  return 270.0f; break;
         default:                return 0.0f;
     }
 }
 
 GLfloat Snake::applyBodyRotation(const size_t &i)
 {
-
-    glm::vec2 prevSegment{ m_segments[i-1] };
-    glm::vec2 currSegment{ m_segments[i] };
-    glm::vec2 nextSegment{ m_segments[i+1] };
-
-    if (m_segments[i].x != prevSegment.x && m_segments[i].y )
-        return 0.0f;
-    return 0.0f;
+    return getRotation(m_segments[i-1], m_segments[i]);
 }
 
 GLfloat Snake::applyCornerRotation(const size_t &i)
 {
+    glm::vec2 prev{ m_segments[i-1] };
+    glm::vec2 curr{ m_segments[i] };
+    glm::vec2 next{ m_segments[i+1] };
+
+    // Find the relative positions of the neighbors
+    bool prevUp     = prev.y < curr.y;
+    bool prevDown   = prev.y > curr.y;
+    bool prevLeft   = prev.x < curr.x;
+    bool prevRight  = prev.x > curr.x;
+
+    bool nextUp     = next.y < curr.y;
+    bool nextDown   = next.y > curr.y;
+    bool nextLeft   = next.x < curr.x;
+    bool nextRight  = next.x > curr.x;
+
+    // DOWN and RIGHT
+    if ((prevDown && nextRight) || (prevRight && nextDown))
+        return 90.0f;
+    // DOWN and LEFT 
+    if ((prevDown && nextLeft) || (prevLeft && nextDown))
+        return 180.0f;
+
+    // UP and LEFT
+    if ((prevUp && nextLeft) || (prevLeft && nextUp))
+        return 270.0f;
+    
+    // UP and RIGHT 
+    if ((prevUp && nextRight) || (prevRight && nextUp))
+        return 0.0f;
+    
+    // default return value
     return 0.0f;
 }
-
 
 bool Snake::isCorner(const size_t &i)
 {
