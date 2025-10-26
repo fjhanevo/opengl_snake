@@ -97,5 +97,12 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-   glViewport(0,0 , width, height);
+    // Get the Game instance
+    Game *game{ static_cast<Game*>(glfwGetWindowUserPointer(window))};
+    if (game)
+    {
+        game->m_width = width;
+        game->m_height = height;
+        glViewport(0,0 , width, height);
+    }
 }
