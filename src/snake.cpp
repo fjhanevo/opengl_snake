@@ -30,8 +30,8 @@ void Snake::draw(SpriteRenderer &renderer)
     // Draw snake head first
     renderer.drawSprite(
             ResourceManager::getTexture("snakeHead"),
-            m_segments[0]
-            //TODO: Add head rotation
+            m_segments[0],
+            applyHeadRotation()
         );
 
     // Draw the body
@@ -110,4 +110,16 @@ int Snake::getLength() const
 const std::vector<glm::vec2> &Snake::getSegments() const
 {
     return m_segments;
+}
+
+GLfloat Snake::applyHeadRotation()
+{
+    switch (getCurrentDirection())
+    {
+        case Direction::UP:     return 180.0f; break;
+        case Direction::DOWN:   return 0.0f; break;
+        case Direction::LEFT:   return 90.0f; break;
+        case Direction::RIGHT:  return -90.0f; break;
+        default:                return 0.0f;
+    }
 }

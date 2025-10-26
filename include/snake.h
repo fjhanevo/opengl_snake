@@ -27,6 +27,7 @@ public:
     const std::vector<glm::vec2> &getSegments() const;
 
 private:
+    GLfloat applyHeadRotation();
     std::vector<glm::vec2> m_segments{};
     GLuint m_width, m_height;
     Direction m_currentDirection {};
