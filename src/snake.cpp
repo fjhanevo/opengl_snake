@@ -27,7 +27,7 @@ void Snake::init()
 
 void Snake::draw(SpriteRenderer &renderer)
 {
-    // Draw snake head first
+    // Draw the head first
     renderer.drawSprite(
             ResourceManager::getTexture("snakeHead"),
             m_segments[0],
@@ -38,18 +38,19 @@ void Snake::draw(SpriteRenderer &renderer)
     for (size_t i{ 1 }; i < m_segments.size() - 1; i++)
     {
         renderer.drawSprite(
-            ResourceManager::getTexture("snakeBody"),   //TODO: Change body texture based on corners
-            m_segments[i]
-            //TODO:: Add rotation (account for corners)
+            (isCorner(i)) ? ResourceManager::getTexture("snakeCorner") : ResourceManager::getTexture("snakeBody"),
+            m_segments[i],
+            applyBodyRotation()
         );
     }
 
+    // Draw the tail
     if (m_segments.size() > 1)
     {
         renderer.drawSprite(
             ResourceManager::getTexture("snakeTail"),
-            m_segments[m_segments.size()-1]
-            //TODO:: Add rotation
+            m_segments[m_segments.size()-1],
+            applyBodyRotation()
         );
     }
 }
@@ -75,6 +76,37 @@ void Snake::move()
 void Snake::grow()
 {
     m_segments.push_back(m_segments.back());
+}
+
+GLfloat Snake::applyHeadRotation()
+{
+    switch (getCurrentDirection())
+    {
+        case Direction::UP:     return 180.0f; break;
+        case Direction::DOWN:   return 0.0f; break;
+        case Direction::LEFT:   return 90.0f; break;
+        case Direction::RIGHT:  return -90.0f; break;
+        default:                return 0.0f;
+    }
+}
+
+GLfloat Snake::applyBodyRotation()
+{
+    return 0.0f;
+}
+
+bool Snake::isCorner(const size_t &i)
+{
+    // Check segment[i] position against it's neighbors
+    glm::vec2 prevSegment{ m_segments[i-1] };
+    glm::vec2 nextSegment{ m_segments[i+1] };
+
+    // If the neighboring positions are on the same axis they are not corners
+    if (m_segments[i].x == prevSegment.x && m_segments[i].x == nextSegment.x || 
+        m_segments[i].y == prevSegment.y && m_segments[i].y == nextSegment.y)
+        return false;
+
+    return true;
 }
 
 void Snake::setDirection(Direction dir)
@@ -112,14 +144,4 @@ const std::vector<glm::vec2> &Snake::getSegments() const
     return m_segments;
 }
 
-GLfloat Snake::applyHeadRotation()
-{
-    switch (getCurrentDirection())
-    {
-        case Direction::UP:     return 180.0f; break;
-        case Direction::DOWN:   return 0.0f; break;
-        case Direction::LEFT:   return 90.0f; break;
-        case Direction::RIGHT:  return -90.0f; break;
-        default:                return 0.0f;
-    }
-}
+
