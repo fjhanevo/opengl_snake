@@ -7,7 +7,10 @@ public:
     Food();
     void draw(SpriteRenderer &renderer);
     void update(float dt);
-    void addFood(const glm::vec2 &position);
+    void init(const glm::vec2 &position);
+    bool getState() const;
+    const glm::vec2 getPosition() const;
+    void setState(bool state);
 
 private:
     glm::vec2 m_position {};

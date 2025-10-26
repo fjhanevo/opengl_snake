@@ -39,3 +39,12 @@ bool Food::getState() const
 {
     return m_isActive;
 }
+const glm::vec2 Food::getPosition() const
+{
+    return m_position;
+}
+
+void Food::setState(bool state)
+{
+    m_isActive = state;
+}
