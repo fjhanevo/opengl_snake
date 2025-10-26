@@ -28,13 +28,13 @@ public:
     void playAgain();
 
     // ----- Public member variables -----
+    GLuint m_width{};
+    GLuint m_height{};
     bool m_keys[1024];
     bool m_keysProcessed[1024];
 
 private:
     // ----- Private member variables -----
-    GLuint m_width{};
-    GLuint m_height{};
     GLuint m_score{};
     GLfloat m_moveTimer {};
 
