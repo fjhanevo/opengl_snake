@@ -9,8 +9,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 
-// Create the Game instance here
-Game Snake(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT);
 
 int main()
 {
@@ -27,8 +25,6 @@ int main()
 
     glfwMakeContextCurrent(window);
 
-    // tell GLFW to associate the game instance with the window
-    glfwSetWindowUserPointer(window, &Snake);
 
     // ----- Load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -37,6 +33,11 @@ int main()
         return -1;
     }
 
+    // ----- Create the Game object -----
+    Game Snake(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, window);
+
+    // tell GLFW to associate the game instance with the window
+    glfwSetWindowUserPointer(window, &Snake);
     glfwSetKeyCallback(window, key_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -57,19 +58,15 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        glfwPollEvents();
 
         // User input
         Snake.processInput();
+        glfwPollEvents();
 
-        // update Game state
+        // Update Game state
         Snake.update(deltaTime);
-        // Render a background
-        glClearColor(0.0f, 0.4f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
-
-        // render
+        // Render
         Snake.render();
         glfwSwapBuffers(window);
     }
@@ -80,6 +77,8 @@ int main()
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
+    // Get the Game instance 
+    Game* game {static_cast<Game*>(glfwGetWindowUserPointer(window))};
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS ||
     key == GLFW_KEY_Q && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -87,11 +86,11 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key >= 0 && key <= 1024)
         {
         if (action == GLFW_PRESS)
-            Snake.m_keys[key] = true;
+            game->m_keys[key] = true;
         else if (action == GLFW_RELEASE)
         {
-            Snake.m_keys[key] = false;
-            Snake.m_keysProcessed[key] = false;
+            game->m_keys[key] = false;
+            game->m_keysProcessed[key] = false;
         }
     }
 }
