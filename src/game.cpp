@@ -1,6 +1,7 @@
 #include "game.h"
 #include "config.h"
 #include "constants.h"
+#include "shader.h"
 #include "sprite_renderer.h"
 #include "resource_manager.h"
 #include "text_renderer.h"
@@ -10,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <random>
 #include <sstream>
+#include <format>
 
 // helper function to get path for resources
 static std::filesystem::path getPath(const std::string &relativePath)
@@ -20,8 +22,9 @@ static std::filesystem::path getPath(const std::string &relativePath)
 // ----- Random number generation -----
 std::mt19937 dev;
 std::random_device r;
-std::uniform_int_distribution<> dist_x(1, Constants::SCREEN_WIDTH  / Constants::GRID_SIZE - 2);
-std::uniform_int_distribution<> dist_y(1, Constants::SCREEN_HEIGHT / Constants::GRID_SIZE - 2);
+std::uniform_int_distribution<> distX(1, Constants::SCREEN_WIDTH  / Constants::GRID_SIZE - 2);
+std::uniform_int_distribution<> distY(1, Constants::SCREEN_HEIGHT / Constants::GRID_SIZE - 2);
+std::uniform_int_distribution<> distBackground(0,5);    // For randomly generating background
 
 // ----- Global variables ------
 SpriteRenderer *Renderer{};
@@ -66,7 +69,13 @@ void Game::init()
     ResourceManager::loadTexture(getPath("textures/snake_corner.png"), true, "snakeCorner");
     ResourceManager::loadTexture(getPath("textures/apple.png"), true, "apple");
     ResourceManager::loadTexture(getPath("textures/fence.png"), true, "fence");
-    ResourceManager::loadTexture(getPath("textures/grass.png"), true, "grass");
+    // ----- Background textures ----- 
+    ResourceManager::loadTexture(getPath("textures/background0.png"), true, "background0");
+    ResourceManager::loadTexture(getPath("textures/background1.png"), true, "background1");
+    ResourceManager::loadTexture(getPath("textures/background2.png"), true, "background2");
+    ResourceManager::loadTexture(getPath("textures/background3.png"), true, "background3");
+    ResourceManager::loadTexture(getPath("textures/background4.png"), true, "background4");
+    ResourceManager::loadTexture(getPath("textures/background5.png"), true, "background5");
 
     Renderer = new SpriteRenderer(ResourceManager::getShader("sprite"));
     Text = new TextRenderer(m_width, m_height);
@@ -105,17 +114,41 @@ void Game::update(float dt)
 }
 
 
+static std::vector<std::vector<int>> backgroundGrid{};
+
+static void generateBackgroundGrid()
+{
+    // normalize
+    const GLuint rows = Constants::SCREEN_WIDTH / Constants::GRID_SIZE;
+    const GLuint cols = Constants::SCREEN_HEIGHT / Constants::GRID_SIZE;
+    backgroundGrid.resize(rows, std::vector<int>(cols, 0));
+
+    for (GLuint x{ 0 }; x < rows; ++x)
+    {
+        for (GLuint y{ 0 }; y < cols; ++y)
+        {
+            backgroundGrid[x][y] = distBackground(dev);
+        }
+    }
+}
+
 
 // Temporary function to draw background
 static void fillBackground(SpriteRenderer &renderer)
 {
-    for (GLuint x{ 0 }; x < Constants::SCREEN_WIDTH; x += Constants::GRID_SIZE)
+    if (backgroundGrid.empty())
+        generateBackgroundGrid();
+
+    // normalize
+    const GLuint rows = Constants::SCREEN_WIDTH / Constants::GRID_SIZE;
+    const GLuint cols = Constants::SCREEN_HEIGHT / Constants::GRID_SIZE;
+    for (GLuint x{ 0 }; x < rows; ++x)
     {
-        for (GLuint y{ 0 }; y < Constants::SCREEN_HEIGHT; y += Constants::GRID_SIZE)
+        for (GLuint y{ 0 }; y < cols; ++y)
         {
             renderer.drawSprite(
-                ResourceManager::getTexture("grass"),
-                glm::vec2(x,y)
+                ResourceManager::getTexture(std::format("background{}", backgroundGrid[x][y])),
+                glm::vec2(x * Constants::GRID_SIZE, y * Constants::GRID_SIZE)
             );
         }
     }
@@ -234,8 +267,8 @@ void Game::addFood()
     glm::vec2 pos{};
     while (!isValid)
     {
-        pos.x = dist_x(r) * Constants::GRID_SIZE;
-        pos.y = dist_y(r) * Constants::GRID_SIZE;
+        pos.x = distX(r) * Constants::GRID_SIZE;
+        pos.y = distY(r) * Constants::GRID_SIZE;
 
         // assume position is valid, check it doesn't spawn on snake
         isValid = true;
@@ -256,7 +289,7 @@ void Game::playAgain()
 {
     m_score = 0;
     m_snake->init();
-    m_state = GAME_ACTIVE;
     m_food->setState(false);
+    m_state = GAME_ACTIVE;
 
 }
