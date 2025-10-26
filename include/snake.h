@@ -27,9 +27,13 @@ public:
     const std::vector<glm::vec2> &getSegments() const;
 
 private:
+    // ----- Private functions -----
     GLfloat applyHeadRotation();
-    GLfloat applyBodyRotation();
+    GLfloat applyBodyRotation(const size_t &i);
+    GLfloat applyCornerRotation(const size_t &i);
     bool isCorner(const size_t &i);
+
+    // ----- Private variables-----
     std::vector<glm::vec2> m_segments{};
     GLuint m_width, m_height;
     Direction m_currentDirection {};
