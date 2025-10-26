@@ -63,6 +63,7 @@ void Game::init()
     ResourceManager::loadTexture(getPath("textures/snake_head.png"), true, "snakeHead");
     ResourceManager::loadTexture(getPath("textures/snake_body.png"), true, "snakeBody");
     ResourceManager::loadTexture(getPath("textures/snake_tail.png"), true, "snakeTail");
+    ResourceManager::loadTexture(getPath("textures/snake_corner.png"), true, "snakeCorner");
     ResourceManager::loadTexture(getPath("textures/apple.png"), true, "apple");
     ResourceManager::loadTexture(getPath("textures/fence.png"), true, "fence");
     ResourceManager::loadTexture(getPath("textures/grass.png"), true, "grass");
@@ -256,4 +257,6 @@ void Game::playAgain()
     m_score = 0;
     m_snake->init();
     m_state = GAME_ACTIVE;
+    m_food->setState(false);
+
 }
