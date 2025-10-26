@@ -8,6 +8,8 @@ Border::Border(GLuint width, GLuint height)
 
 void Border::draw(SpriteRenderer &renderer)
 {
+
+    //TODO: Add "holes" in the middle of the borders for Snake to go through
     for (GLuint x{ Constants::GRID_SIZE }; x < m_width - Constants::GRID_SIZE; x += Constants::GRID_SIZE) 
     {
         // Draw top border

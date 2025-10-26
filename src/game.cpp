@@ -95,6 +95,7 @@ void Game::init()
 
 void Game::update(float dt)
 {
+    // TODO: Make Snake move faster based on how long it is, remember to set a cap
     constexpr GLfloat MOVE_INTERVAL { 0.15f };
     if (m_state == GAME_ACTIVE)
     {
@@ -161,6 +162,7 @@ static void fillBackground(SpriteRenderer &renderer)
 
 void Game::render()
 {
+    //TODO: See if I can do something with the grids beeing visible
     std::stringstream ss; ss << m_score;
     if (m_state == GAME_ACTIVE) 
     {
@@ -241,6 +243,8 @@ void Game::checkCollision()
         m_score++;
     }
 
+    //TODO: Update for holes and wrap around instead 
+    
     // check collision with border
     if (snakeHead.x < Constants::GRID_SIZE || 
         snakeHead.x >= Constants::SCREEN_WIDTH - Constants::GRID_SIZE ||
