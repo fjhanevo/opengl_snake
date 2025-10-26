@@ -18,7 +18,8 @@ void Border::draw(SpriteRenderer &renderer)
         // Draw bottom border
         renderer.drawSprite(
             ResourceManager::getTexture("fence"),
-            glm::vec2(x, m_height - Constants::GRID_SIZE)
+            glm::vec2(x, m_height - Constants::GRID_SIZE),
+            180.0f
         );
 
     }
@@ -29,14 +30,14 @@ void Border::draw(SpriteRenderer &renderer)
         renderer.drawSprite(
             ResourceManager::getTexture("fence"),
             glm::vec2(0, y),
-            90.0f
+            270.0f
         );
 
         // Right border column
         renderer.drawSprite(
             ResourceManager::getTexture("fence"),
             glm::vec2(m_width - Constants::GRID_SIZE, y),
-            90.0f
+            90.0f 
         );
     }
 }
