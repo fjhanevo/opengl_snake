@@ -148,7 +148,7 @@ void Game::render()
         Text->renderText(
             "Play Again [y/N]",
             floor(Constants::SCREEN_WIDTH / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
-            floor(Constants::SCREEN_HEIGHT / (2.0f * Constants::GRID_SIZE)) * 2*Constants::GRID_SIZE,
+            floor(Constants::SCREEN_HEIGHT / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE + Constants::GRID_SIZE,
             1.0
         );
     }
@@ -241,7 +241,7 @@ void Game::addFood()
 
         for (const auto &segment : m_snake->getSegments())
         {
-            if (segment.x == pos.x && segment.y == pos.y)
+            if (segment == pos)
             {
                 isValid = false;
                 break;    
