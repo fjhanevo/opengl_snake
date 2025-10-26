@@ -17,7 +17,7 @@ class Game
 {
 public:
     // constructor and desctructor
-    Game(GLuint width, GLuint height);
+    Game(GLuint width, GLuint height, GLFWwindow *window);
     ~Game();
 
     // ---- Game functions -----
