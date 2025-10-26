@@ -105,9 +105,9 @@ void Game::playAgain()
 // Temporary function to draw background
 static void fillBackground(SpriteRenderer &renderer)
 {
-    for (GLuint x { 0 }; x < Constants::SCREEN_WIDTH; x += Constants::GRID_SIZE)
+    for (GLuint x{ 0 }; x < Constants::SCREEN_WIDTH; x += Constants::GRID_SIZE)
     {
-        for (GLuint y { 0 }; y < Constants::SCREEN_HEIGHT; y += Constants::GRID_SIZE)
+        for (GLuint y{ 0 }; y < Constants::SCREEN_HEIGHT; y += Constants::GRID_SIZE)
         {
             renderer.drawSprite(
                 ResourceManager::getTexture("grass"),
@@ -167,7 +167,36 @@ void Game::processInput()
 
 void Game::checkCollision()
 {
+    // get the head position
+    glm::vec2 snakeHead{ m_snake->getHeadPosition() };
 
+    // check collision with food
+    if (snakeHead == m_food->getPosition())
+    {
+        m_food->setState(false);
+        m_snake->grow();
+        m_score++;
+    }
+
+    // check collision with border
+    if (snakeHead.x < Constants::GRID_SIZE || 
+        snakeHead.x >= Constants::SCREEN_WIDTH - Constants::GRID_SIZE ||
+        snakeHead.y < Constants::GRID_SIZE ||
+        snakeHead.y >= Constants::SCREEN_HEIGHT - Constants::GRID_SIZE)
+        m_state = GAME_LOST;
+
+    // check collision with self
+    // can't collide with itself if length is < 4
+    if (m_snake->getLength() < 4)
+        return;
+    for (size_t i = 1; i < m_snake->getLength(); i++)
+    {
+        if (snakeHead == m_snake->getSegments()[i]) 
+        {
+            m_state = GAME_LOST;
+            break;
+        }
+    }
 }
 
 void Game::addFood()
