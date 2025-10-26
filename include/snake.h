@@ -28,6 +28,8 @@ public:
 
 private:
     GLfloat applyHeadRotation();
+    GLfloat applyBodyRotation();
+    bool isCorner(const size_t &i);
     std::vector<glm::vec2> m_segments{};
     GLuint m_width, m_height;
     Direction m_currentDirection {};
