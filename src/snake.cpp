@@ -23,6 +23,10 @@ void Snake::init()
     // Add two more body parts
     m_segments.push_back(glm::vec2(headPos.x, headPos.y - Constants::GRID_SIZE));
     m_segments.push_back(glm::vec2(headPos.x, headPos.y - 2 * Constants::GRID_SIZE));
+
+    // Set Direction DOWN again, this is mainly for the playAgain function
+    m_currentDirection = Direction::DOWN; 
+    m_nextDirection = Direction::DOWN;
 }
 
 void Snake::draw(SpriteRenderer &renderer)
@@ -40,7 +44,7 @@ void Snake::draw(SpriteRenderer &renderer)
         renderer.drawSprite(
             (isCorner(i)) ? ResourceManager::getTexture("snakeCorner") : ResourceManager::getTexture("snakeBody"),
             m_segments[i],
-            applyBodyRotation()
+            (isCorner(i)) ? applyCornerRotation(i) : applyBodyRotation(i)
         );
     }
 
@@ -49,8 +53,7 @@ void Snake::draw(SpriteRenderer &renderer)
     {
         renderer.drawSprite(
             ResourceManager::getTexture("snakeTail"),
-            m_segments[m_segments.size()-1],
-            applyBodyRotation()
+            m_segments[m_segments.size()-1]
         );
     }
 }
@@ -90,10 +93,23 @@ GLfloat Snake::applyHeadRotation()
     }
 }
 
-GLfloat Snake::applyBodyRotation()
+GLfloat Snake::applyBodyRotation(const size_t &i)
+{
+
+    glm::vec2 prevSegment{ m_segments[i-1] };
+    glm::vec2 currSegment{ m_segments[i] };
+    glm::vec2 nextSegment{ m_segments[i+1] };
+
+    if (m_segments[i].x != prevSegment.x && m_segments[i].y )
+        return 0.0f;
+    return 0.0f;
+}
+
+GLfloat Snake::applyCornerRotation(const size_t &i)
 {
     return 0.0f;
 }
+
 
 bool Snake::isCorner(const size_t &i)
 {
