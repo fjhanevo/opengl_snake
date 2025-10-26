@@ -8,9 +8,12 @@ project(opengl_snake)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(Freetype REQUIRED)
 
 # for resource path
 configure_file(config.h.in config.h)
+
+include_directories(${FREETYPE_INCLUDE_DIRS})
 
 # ----- Executables ------ 
 add_executable(opengl_snake
@@ -20,10 +23,12 @@ add_executable(opengl_snake
     src/food.cpp
     src/border.cpp
     src/external/glad.c
+    src/external/stb_image.cpp
     src/external/shader.cpp
     src/external/texture.cpp
     src/external/sprite_renderer.cpp
     src/external/resource_manager.cpp
+    src/external/text_renderer.cpp
 )
 
 target_include_directories(opengl_snake PRIVATE
@@ -33,3 +38,4 @@ target_include_directories(opengl_snake PRIVATE
 )
 
 target_link_libraries(opengl_snake PRIVATE OpenGL::GL glfw)
+target_link_libraries(opengl_snake PRIVATE ${FREETYPE_LIBRARIES})
