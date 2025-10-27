@@ -162,11 +162,10 @@ static void fillBackground(SpriteRenderer &renderer)
 
 void Game::render()
 {
-    //TODO: See if I can do something with the grids beeing visible
+    glClear(GL_COLOR_BUFFER_BIT);
     std::stringstream ss; ss << m_score;
     if (m_state == GAME_ACTIVE) 
     {
-        glClear(GL_COLOR_BUFFER_BIT);
         fillBackground(*Renderer);
         m_border->draw(*Renderer);
         m_snake->draw(*Renderer);
@@ -174,11 +173,14 @@ void Game::render()
         if (m_food->getState())
             m_food->draw(*Renderer);
 
+        //TODO: Fix issue with blurred text
         Text->renderText("Score:"+ss.str(), Constants::GRID_SIZE, Constants::GRID_SIZE, 1.0f);
     }
 
-    if (m_state == GAME_LOST)
+    else if (m_state == GAME_LOST)
     {
+        fillBackground(*Renderer);
+        m_border->draw(*Renderer);
         Text->renderText(
             "Your Score:"+ss.str(), 
             floor(Constants::SCREEN_WIDTH / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
