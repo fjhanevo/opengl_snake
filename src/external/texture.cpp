@@ -2,7 +2,7 @@
 
 Texture2D::Texture2D()
     : m_width(0), m_height(0), m_internalFormat(GL_RGB), m_imageFormat(GL_RGB),
-    m_wrapS(GL_REPEAT), m_wrapT(GL_REPEAT), m_filterMin(GL_LINEAR), m_filterMax(GL_LINEAR)
+    m_wrapS(GL_REPEAT), m_wrapT(GL_REPEAT), m_filterMin(GL_NEAREST), m_filterMax(GL_NEAREST)
 {
     glGenTextures(1, &m_ID);
 }
