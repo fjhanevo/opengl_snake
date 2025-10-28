@@ -156,3 +156,23 @@ void TextRenderer::renderText(
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+// Get the size of rendered text
+glm::vec2 TextRenderer::getTextSize(const std::string &text, GLfloat scale)
+{
+    GLfloat totalWidth{}, maxHeight{};
+    // iterate through the characters  
+    std::string::const_iterator c{};
+
+    for (c = text.begin(); c != text.end(); c++)
+    {
+        // Get width and height of current character and add to the total
+        Character ch{ m_characters[*c] };
+
+        totalWidth += (ch.advance >> 6) * scale;
+
+        GLfloat charHeight { ch.size.y  * scale };
+        if (charHeight > maxHeight)
+            maxHeight = charHeight;
+    }
+    return glm::vec2(totalWidth, maxHeight);
+}
