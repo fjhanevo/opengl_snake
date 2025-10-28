@@ -172,26 +172,35 @@ void Game::render()
         if (m_food->getState())
             m_food->draw(*Renderer);
 
-        //TODO: Fix issue with blurred text
         Text->renderText("Score:"+ss.str(), Constants::GRID_SIZE, Constants::GRID_SIZE, 1.0f);
     }
 
     else if (m_state == GAME_LOST)
     {
+        std::string scoreStr{ "Your Score:"+ss.str() };
+        std::string promptStr{ "Play again? [y/N]" };
+
+        glm::vec2 scoreStrSize{ Text->getTextSize(scoreStr)};
+        glm::vec2 promptStrSize{ Text->getTextSize(promptStr) };
+
         fillBackground(*Renderer);
         m_border->draw(*Renderer);
+
+        // Center text position
+        GLfloat yPos {Constants::SCREEN_HEIGHT / 2.0f };
+        GLfloat scoreX { (Constants::SCREEN_WIDTH - scoreStrSize.x) / 2.0f };
+        GLfloat promptX { (Constants::SCREEN_WIDTH - promptStrSize.x) / 2.0f };
+
         Text->renderText(
-            "Your Score:"+ss.str(), 
-            floor(Constants::SCREEN_WIDTH / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
-            floor(Constants::SCREEN_HEIGHT/ (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
-            1.0
+            scoreStr, 
+            scoreX,
+            yPos - Constants::GRID_SIZE
         );
         
         Text->renderText(
-            "Play Again [y/N]",
-            floor(Constants::SCREEN_WIDTH / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE,
-            floor(Constants::SCREEN_HEIGHT / (2.0f * Constants::GRID_SIZE)) * Constants::GRID_SIZE + Constants::GRID_SIZE,
-            1.0
+            promptStr,
+            promptX,
+            yPos
         );
     }
 }
