@@ -64,6 +64,7 @@ int main()
         Snake.update(deltaTime);
 
         // Render
+        glClear(GL_COLOR_BUFFER_BIT);
         Snake.render();
         glfwSwapBuffers(window);
     }

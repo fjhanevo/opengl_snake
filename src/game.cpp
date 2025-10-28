@@ -162,7 +162,6 @@ static void fillBackground(SpriteRenderer &renderer)
 
 void Game::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
     std::stringstream ss; ss << m_score;
     if (m_state == GAME_ACTIVE) 
     {
