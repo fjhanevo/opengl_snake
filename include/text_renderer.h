@@ -27,9 +27,12 @@ public:
         const std::string &text, 
         GLfloat x, 
         GLfloat y, 
-        GLfloat scale,
+        GLfloat scale = 1.0f,
         glm::vec3 color = glm::vec3(1.0f)
     );
+
+    glm::vec2 getTextSize(const std::string &text, GLfloat scale = 1.0f);
+
 private:
     GLuint m_VAO{}, m_VBO{};
 };
