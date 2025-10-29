@@ -132,15 +132,11 @@ static std::vector<std::vector<int>> backgroundGrid{};
 
 static void generateBackgroundGrid()
 {
-    // normalize
-    const GLuint rows{ Constants::SCREEN_WIDTH / Constants::GRID_SIZE };
-    const GLuint cols{ Constants::SCREEN_HEIGHT / Constants::GRID_SIZE };
+    backgroundGrid.resize(Constants::ROWS, std::vector<int>(Constants::COLS, 0));
 
-    backgroundGrid.resize(rows, std::vector<int>(cols, 0));
-
-    for (GLuint x{ 0 }; x < rows; ++x)
+    for (GLuint x{ 0 }; x < Constants::ROWS; ++x)
     {
-        for (GLuint y{ 0 }; y < cols; ++y)
+        for (GLuint y{ 0 }; y < Constants::COLS; ++y)
         {
             backgroundGrid[x][y] = distBackground(dev);
         }
@@ -153,12 +149,9 @@ static void fillBackground(SpriteRenderer &renderer)
     if (backgroundGrid.empty())
         generateBackgroundGrid();
 
-    // normalize
-    const GLuint rows = Constants::SCREEN_WIDTH / Constants::GRID_SIZE;
-    const GLuint cols = Constants::SCREEN_HEIGHT / Constants::GRID_SIZE;
-    for (GLuint x{ 0 }; x < rows; ++x)
+    for (GLuint x{ 0 }; x < Constants::ROWS; ++x)
     {
-        for (GLuint y{ 0 }; y < cols; ++y)
+        for (GLuint y{ 0 }; y < Constants::COLS; ++y)
         {
             renderer.drawSprite(
                 ResourceManager::getTexture(std::format("background{}", backgroundGrid[x][y])),
