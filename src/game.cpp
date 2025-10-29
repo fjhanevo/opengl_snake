@@ -128,6 +128,7 @@ void Game::update(float dt)
 
 }
 
+// Hold random (x,y) positions for background textures to be placed
 static std::vector<std::vector<int>> backgroundGrid{};
 
 static void generateBackgroundGrid()
