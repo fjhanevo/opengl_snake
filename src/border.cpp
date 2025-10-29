@@ -8,18 +8,17 @@ Border::Border(GLuint width, GLuint height)
 
 void Border::draw(SpriteRenderer &renderer)
 {
-
-    //TODO: Add "holes" in the middle of the borders for Snake to go through
     for (GLuint x{ 1 }; x < Constants::ROWS - 1; ++x) 
     {
         // Draw top border
         renderer.drawSprite(
-            ResourceManager::getTexture("fence"),
+            (x == 9 || x == 10) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
             glm::vec2(x * Constants::GRID_SIZE, 0.0f)
         );
+
         // Draw bottom border
         renderer.drawSprite(
-            ResourceManager::getTexture("fence"),
+            (x == 9 || x == 10) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
             glm::vec2(x * Constants::GRID_SIZE, m_height - Constants::GRID_SIZE),
             180.0f
         );
@@ -30,7 +29,7 @@ void Border::draw(SpriteRenderer &renderer)
     {
         // Left border column
         renderer.drawSprite(
-            ResourceManager::getTexture("fence"),
+            (y == 7) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
             glm::vec2(0, y * Constants::GRID_SIZE),
             270.0f
         );
