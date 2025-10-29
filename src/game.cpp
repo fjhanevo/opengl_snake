@@ -133,8 +133,9 @@ static std::vector<std::vector<int>> backgroundGrid{};
 static void generateBackgroundGrid()
 {
     // normalize
-    const GLuint rows = Constants::SCREEN_WIDTH / Constants::GRID_SIZE;
-    const GLuint cols = Constants::SCREEN_HEIGHT / Constants::GRID_SIZE;
+    const GLuint rows{ Constants::SCREEN_WIDTH / Constants::GRID_SIZE };
+    const GLuint cols{ Constants::SCREEN_HEIGHT / Constants::GRID_SIZE };
+
     backgroundGrid.resize(rows, std::vector<int>(cols, 0));
 
     for (GLuint x{ 0 }; x < rows; ++x)
