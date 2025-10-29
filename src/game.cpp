@@ -19,6 +19,11 @@ static std::filesystem::path getPath(const std::string &relativePath)
     return std::filesystem::path(RESOURCE_DIR) / relativePath;
 }
 
+// Game constants related to drawing speed interval
+constexpr GLfloat MIN_INTERVAL      { 0.06f };
+constexpr GLfloat START_INTERVAL    { 0.15f };
+constexpr GLfloat SPEED_FACTOR      { 0.0025f };
+
 // ----- Random number generation -----
 std::mt19937 dev;
 std::random_device r;
@@ -95,14 +100,16 @@ void Game::init()
 
 void Game::update(float dt)
 {
-    // TODO: Make Snake move faster based on how long it is, remember to set a cap
-    constexpr GLfloat MOVE_INTERVAL { 0.15f };
     if (m_state == GAME_ACTIVE)
     {
+        // Subtract 3 since the Snake starts with 3 segments
+        GLfloat moveInterval{ START_INTERVAL - ((m_snake->getLength()-3) * SPEED_FACTOR) };
+        if (moveInterval < MIN_INTERVAL) 
+            moveInterval = MIN_INTERVAL; 
         m_moveTimer += dt;
 
         // check if enough time has passed to move the snake
-        if (m_moveTimer >= MOVE_INTERVAL)
+        if (m_moveTimer >= moveInterval)
         {
             Direction nextDir {m_snake->getNextDirection()};
             m_snake->setDirection(nextDir);
