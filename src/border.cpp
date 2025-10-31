@@ -94,3 +94,8 @@ bool Border::isOpen(const glm::vec2& gridPos) const
     }
     return false;
 }
+
+std::vector<glm::vec2> Border::getOpenGrids() const
+{
+    return m_openGrids;
+}
