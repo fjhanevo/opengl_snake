@@ -17,6 +17,7 @@ public:
     void grow();
 
     void setDirection(Direction dir);
+    void setHeadPosition(const glm::vec2& pos);
     void queueDirection(Direction dir);
 
     // ----- get functions -----
