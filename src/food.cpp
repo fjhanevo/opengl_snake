@@ -1,4 +1,5 @@
 #include "food.h"
+#include "constants.h"
 #include "resource_manager.h"
 
 constexpr float FOOD_TIME = 10.0f;
@@ -41,7 +42,10 @@ bool Food::getState() const
 }
 const glm::vec2 Food::getPosition() const
 {
-    return m_position;
+    return glm::vec2(
+        m_position.x / Constants::GRID_SIZE,
+        m_position.y / Constants::GRID_SIZE
+    );
 }
 
 void Food::setState(bool state)

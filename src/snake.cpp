@@ -54,7 +54,7 @@ void Snake::draw(SpriteRenderer &renderer)
         renderer.drawSprite(
             ResourceManager::getTexture("snakeTail"),
             m_segments.back(),
-            applyBodyRotation(m_segments.size()-1) + 180.0f
+            applyBodyRotation(m_segments.size()-1) + 180.0f // add 180 to get the correct texture rotation
         );
     }
 }
@@ -175,6 +175,12 @@ void Snake::setDirection(Direction dir)
     m_currentDirection = dir;
 }
 
+void Snake::setHeadPosition(const glm::vec2 &pos)
+// Used for wrap around for open grids
+{
+    m_segments[0] = pos;
+}
+
 void Snake::queueDirection(Direction dir)
 {
     m_nextDirection = dir;
@@ -192,7 +198,10 @@ Direction Snake::getNextDirection() const
 
 glm::vec2 Snake::getHeadPosition() const
 {
-    return m_segments[0];
+    return glm::vec2(
+        m_segments[0].x / Constants::GRID_SIZE,
+        m_segments[0].y / Constants::GRID_SIZE
+    );
 }
 
 int Snake::getLength() const
