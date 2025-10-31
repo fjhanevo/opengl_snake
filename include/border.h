@@ -5,9 +5,10 @@
 class Border
 {
 public:
-    Border(GLuint width, GLuint height);
+    Border();
     void draw(SpriteRenderer &renderer);
-    std::vector<glm::vec2> m_openGrids{};
+    bool isOpen(const glm::vec2 &gridPos) const;
 private:
     GLuint m_width{}, m_height{};
+    std::vector<glm::vec2> m_openGrids{};
 };
