@@ -247,6 +247,14 @@ void Game::checkCollision()
     // get the head position
     glm::vec2 snakeHead{ m_snake->getHeadPosition() };
 
+    const GLint LEFT_BORDER { 0 };
+    const GLint RIGHT_BORDER { Constants::ROWS - 1 };
+    const GLint TOP_BORDER { 0 };
+    const GLint BOTTOM_BORDER { Constants::COLS - 1 };
+
+    bool wrapped { false };
+    glm::vec2 newHeadPos{};
+
     // check collision with food
     if (snakeHead == m_food->getPosition())
     {
@@ -254,28 +262,77 @@ void Game::checkCollision()
         m_snake->grow();
         m_score++;
     }
+    // check collision with border or wrap around
+    if (snakeHead.x == LEFT_BORDER) // hits left 
+    {
+        if (m_border->isOpen(snakeHead))
+        {
+            // wrap to right side
+            newHeadPos = glm::vec2((RIGHT_BORDER - 1) * Constants::GRID_SIZE, snakeHead.y * Constants::GRID_SIZE);
+            wrapped = true;
+        }
+        else 
+        {
+            m_state = GAME_LOST;
+            return;
+        }
+    }
+    else if (snakeHead.x == RIGHT_BORDER) // hits right wall
+    {
+        if (m_border->isOpen(snakeHead))
+        {
+            // wrap to left side
+            newHeadPos = glm::vec2((LEFT_BORDER + 1) * Constants::GRID_SIZE, snakeHead.y * Constants::GRID_SIZE);
+            wrapped = true;
+        }
+        else 
+        {
+            m_state = GAME_LOST;
+            return;
+        }
+    } 
+    else if (snakeHead.y == TOP_BORDER) // hits top wall
+    {
+        if (m_border->isOpen(snakeHead))
+        {
+            // wrap to bottom side
+            newHeadPos = glm::vec2(snakeHead.x * Constants::GRID_SIZE, (BOTTOM_BORDER - 1) * Constants::GRID_SIZE);
+            wrapped = true;
+        }
+        else 
+    {
+            m_state = GAME_LOST;
+            return;
+        }
+    }
+    else if (snakeHead.y == BOTTOM_BORDER) // hits bottom wall
+    {
+        if (m_border->isOpen(snakeHead))
+        {
+            // wrap to top side
+            newHeadPos = glm::vec2(snakeHead.x * Constants::GRID_SIZE, (TOP_BORDER + 1) * Constants::GRID_SIZE);
+            wrapped = true;
 
-    //TODO: Update for holes and wrap around instead 
+        }
+    }
+
+    if (wrapped) m_snake->setHeadPosition(newHeadPos);
     
-    // check collision with border
-    if (snakeHead.x < Constants::GRID_SIZE || 
-        snakeHead.x >= Constants::SCREEN_WIDTH - Constants::GRID_SIZE ||
-        snakeHead.y < Constants::GRID_SIZE ||
-        snakeHead.y >= Constants::SCREEN_HEIGHT - Constants::GRID_SIZE)
-        m_state = GAME_LOST;
-
     // check collision with self
     // can't collide with itself if length is < 4
     if (m_snake->getLength() < 4)
         return;
+    //TODO: See if I can make this solution better
+    glm::vec2 snakeHeadScaled { snakeHead.x * Constants::GRID_SIZE, snakeHead.y * Constants::GRID_SIZE };
     for (size_t i = 1; i < m_snake->getLength(); i++)
     {
-        if (snakeHead == m_snake->getSegments()[i]) 
+        if (snakeHeadScaled == m_snake->getSegments()[i]) 
         {
             m_state = GAME_LOST;
             break;
         }
     }
+
 }
 
 void Game::addFood()
