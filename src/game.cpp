@@ -95,7 +95,7 @@ void Game::init()
     
     m_snake = new Snake(m_width, m_height);
     m_food = new Food();
-    m_border = new Border(m_width, m_height);
+    m_border = new Border();
 }   
 
 void Game::update(float dt)
