@@ -315,6 +315,10 @@ void Game::checkCollision()
             wrapped = true;
 
         }
+        else {
+            m_state = GAME_LOST;
+            return;
+        }
     }
 
     if (wrapped) m_snake->setHeadPosition(newHeadPos);
