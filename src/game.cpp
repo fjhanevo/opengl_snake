@@ -74,6 +74,7 @@ void Game::init()
     ResourceManager::loadTexture(getPath("textures/snake_corner.png"), true, "snakeCorner");
     ResourceManager::loadTexture(getPath("textures/apple.png"), true, "apple");
     ResourceManager::loadTexture(getPath("textures/fence.png"), true, "fence");
+    ResourceManager::loadTexture(getPath("textures/hole.png"), true, "hole");
     // ----- Background textures ----- 
     ResourceManager::loadTexture(getPath("textures/background0.png"), true, "background0");
     ResourceManager::loadTexture(getPath("textures/background1.png"), true, "background1");
