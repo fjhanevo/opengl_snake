@@ -54,13 +54,13 @@ void Border::draw(SpriteRenderer &renderer)
     {
         // Draw top border
         renderer.drawSprite(
-            (isOpen({x, 0})) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
+            (isOpen({x, 0})) ? ResourceManager::getTexture("hole") : ResourceManager::getTexture("fence"),
             glm::vec2(x * Constants::GRID_SIZE, 0.0f)
         );
 
         // Draw bottom border
         renderer.drawSprite(
-            (isOpen({x, Constants::COLS - 1})) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
+            (isOpen({x, Constants::COLS - 1})) ? ResourceManager::getTexture("hole") : ResourceManager::getTexture("fence"),
             glm::vec2(x * Constants::GRID_SIZE, (Constants::COLS - 1) * Constants::GRID_SIZE),
             180.0f
         );
@@ -71,14 +71,14 @@ void Border::draw(SpriteRenderer &renderer)
     {
         // Left border column
         renderer.drawSprite(
-            (isOpen({0,y})) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
+            (isOpen({0,y})) ? ResourceManager::getTexture("hole") : ResourceManager::getTexture("fence"),
             glm::vec2(0, y * Constants::GRID_SIZE),
             270.0f
         );
 
         // Right border column
         renderer.drawSprite(
-            (isOpen({(Constants::ROWS - 1), y})) ? ResourceManager::getTexture("background0") : ResourceManager::getTexture("fence"),
+            (isOpen({(Constants::ROWS - 1), y})) ? ResourceManager::getTexture("hole") : ResourceManager::getTexture("fence"),
             glm::vec2((Constants::ROWS -1)* Constants::GRID_SIZE, y * Constants::GRID_SIZE),
             90.0f 
         );
