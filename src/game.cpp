@@ -45,9 +45,6 @@ Game::~Game()
 {
     delete Renderer; 
     delete Text;
-    delete m_snake;
-    delete m_food;
-    delete m_border;
     ResourceManager::clear();
 }
 
@@ -94,9 +91,9 @@ void Game::init()
     Text = new TextRenderer(m_width, m_height);
     Text->load(getPath("fonts/slkscr.ttf"), 24);
     
-    m_snake = new Snake(m_width, m_height);
-    m_food = new Food();
-    m_border = new Border();
+    m_snake = std::make_unique<Snake>(m_width, m_height);
+    m_food = std::make_unique<Food>();
+    m_border = std::make_unique<Border>();
 }   
 
 void Game::update(float dt)

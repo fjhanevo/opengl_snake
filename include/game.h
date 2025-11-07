@@ -5,6 +5,7 @@
 #include "food.h"
 #include "border.h"
 #include <GLFW/glfw3.h>
+#include <memory>
 
 
 enum GameState
@@ -40,9 +41,9 @@ private:
 
     GLFWwindow *m_window;
     GameState m_state;
-    Snake *m_snake;
-    Food *m_food;
-    Border *m_border;
+    std::unique_ptr<Snake> m_snake;
+    std::unique_ptr<Food> m_food;
+    std::unique_ptr<Border> m_border;
     
     // ----- Private Game functions -----
     void addFood();
